@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <stdlib.h>
 #include <string>
@@ -52,25 +53,25 @@ void MergeFunc(int *array, int l, int m, int r) {
   }
 
 }
-void MergeSort(int *array, int leftBound, int rightBound) {
+void MergeSort(int *array, int l, int r) {
 
-  if (leftBound < rightBound)
+  if (l < r)
   {
 
-      int m = leftBound+(rightBound-leftBound)/2;
+      int m = l+(r-l)/2;
 
-      MergeSort(array, leftBound, m);
-      MergeSort(array, m+1, rightBound);
+      MergeSort(array, l, m);
+      MergeSort(array, m+1, r);
 
-      MergeFunc(array, leftBound, m, rightBound);
+      MergeFunc(array, l, m, r);
   }
   
 }
 
-void InsertionSort(int *array, int low, int high) {
+void InsertionSort(int *array, int n) {
 
   int i, j, k;
-  for (i = 1; i < high; i++)
+  for (i = 1; i < n; i++)
   {
       k = array[i];
       j = i-1;
@@ -85,19 +86,21 @@ void InsertionSort(int *array, int low, int high) {
 
 }
 
-void MyFunc ( int *array, int low, int high ) {  
+void MyFunc ( int *array, int n ) {  
   // for MergeSort
-  int r = high - low;
-  if (r >= 100) MergeSort(array, low, high);
-  else if (r < 100) InsertionSort(array, low, high);
+  int l = 0;
+  int r = n;
+  if (n >= 100) MergeSort(array, l, r - 1);
+  else if (n < 100) InsertionSort(array, n - 1);
 
 }
+
 
 int main(int argc,char **argv) {
 
   int *Sequence;
   int arraySize;
-  int low, high = 0;
+
   // Get the size of the sequence
   cin >> arraySize;
 
@@ -107,17 +110,14 @@ int main(int argc,char **argv) {
   // Read in the sequence
   for ( int i=0; i<arraySize; i++ )
     cin >> Sequence[i];
-  
 
-// Run your algorithms to manipulate the elements in Sequence
-  MyFunc(Sequence, 0, arraySize ); 
+  // Run your algorithms to manipulate the elements in Sequence
+  MyFunc(Sequence, arraySize); 
     
   // Output the result
-  for(int i=1; i<arraySize; i++)
-     if (i < arraySize)
+  for(int i=0; i<arraySize; i++)
       cout << Sequence[i] << endl;
-     else 
-      cout << Sequence[i];
+    
   // Free allocated space
   delete[] Sequence;
 }
