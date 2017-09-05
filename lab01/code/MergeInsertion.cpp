@@ -62,7 +62,6 @@ void MergeSort(int *array, int l, int r) {
 
       MergeSort(array, l, m);
       MergeSort(array, m+1, r);
-
       MergeFunc(array, l, m, r);
   }
   
