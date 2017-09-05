@@ -8,7 +8,8 @@ corr=0;
 for i in `seq 1 10`; do
     rm -f tempresult1
     rm -f tempresult2 
-    ./MergeInsertion.exe < ./testfiles/t$i >> tempresult1
+    #./MergeInsertion.exe < ./testfiles/t$i >> tempresult1
+    ./MergeInsertion.exe.dSYM/Contents/Resources/DWARF/MergeInsertion.exe < ./testfiles/t$i >> tempresult1
     ./testfiles/sol.exe < ./testfiles/t$i >> tempresult2
     diff tempresult1 tempresult2 >> tempcnt
     if [ -s tempcnt ] ; then
