@@ -1,76 +1,51 @@
+// Written by Jan Tanja
 
 #include <iostream>
-#include <stdlib.h>
-#include <string>
+#include <algorithm>
 
-using namespace std;
+int partition(int *array, const int l, const int r) {
+    const int mid = l + (r - l) / 2;
+    const int pivot = array[mid];
+    // move the mid point value to the front.
+    std::swap(array[mid],array[l]);
+    int i = l + 1;
+    int j = r;
+    while (i <= j) {
+        while(i <= j && array[i] <= pivot) {
+            i++;
+        }
 
-void swap(int* a, int* b)
-{
-    int t = *a;
-    *a = *b;
-    *b = t;
+        while(i <= j && array[j] > pivot) {
+            j--;
+        }
+
+        if (i < j) {
+            std::swap(array[i], array[j]);
+        }
+    }
+    std::swap(array[i - 1],array[l]);
+    return i - 1;
 }
 
-   int partition (int * arr, int low, int high)
-   {
-       int pivot = arr[high];    // pivot
-       int i = (low - 1);  // Index of smaller element
-    
-       for (int j = low; j <= high- 1; j++)
-       {
-           // If current element is smaller than or
-           // equal to pivot
-           if (arr[j] <= pivot)
-           {
-               i++;    // increment index of smaller element
-               swap(&arr[i], &arr[j]);
-           }
-       }
-       swap(&arr[i + 1], &arr[high]);
-       return (i + 1);
-   }
-    
-   /* The main function that implements QuickSort
-    arr[] --> Array to be sorted,
-     low  --> Starting index,
-     high  --> Ending index */
-   void MyFunc(int *array, int low, int high)
-   {
-       if (low < high)
-       {
-           /* pi is partitioning index, arr[p] is now
-              at right place */
-           int pi = partition(array, low, high);
-    
-           // Separately sort elements before
-           // partition and after partition
-           MyFunc(array, low, pi - 1);
-           MyFunc(array, pi + 1, high);
-       }
-   }
+void quicksort(int *array, const int l, const int r, const int sz){
+    if (l >= r) {
+        return;
+    }
+    int part = partition(array, l, r); 
+    quicksort(array, l, part - 1, sz);
+    quicksort(array, l + 1, r, sz);
+}
 
-int main(int argc,char **argv) {
-
-  int *Sequence;
-  int arraySize;
-  // Get the size of the sequence
-  cin >> arraySize;
-
-  // Allocate enough memory to store "arraySize" integers
+int main(int argc, char **argv)
+{
+  int arraySize, *Sequence;
+  std::cin >> arraySize;
   Sequence = new int[arraySize];
-    
-  // Read in the sequence
-  for ( int i=0; i<arraySize; i++ ) {
-    cin >> Sequence[i];
-  }
-  // Run your algorithms to manipulate the elements in Sequence
-  MyFunc( Sequence, 0, arraySize - 1); 
-    
-  // Output the result
-  for(int i=0; i<arraySize; i++)
-      cout << Sequence[i] << endl;
-    
-  // Free allocated space
+  for (int c = 0; c < arraySize; c++)
+    std::cin >> Sequence[c];
+  quicksort(Sequence, 0, (arraySize - 1), arraySize); 
+  for(int c = 0; c < arraySize; c++)
+      std::cout << Sequence[c] << std::endl;
   delete[] Sequence;
+  return 0;
 }
