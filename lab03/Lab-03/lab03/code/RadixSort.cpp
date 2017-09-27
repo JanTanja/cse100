@@ -1,77 +1,70 @@
+// written by Jan Tanja 9/21/2017
+
 #include <iostream>
 #include <stdlib.h>
-#include <string>
-
 using namespace std;
 
+class vec{
+        public:
+                int key[11];
+                vec() {
+                        for(int i = 1; i <= 10; i++) {
+                                key[i] = 0;
+                        }
+                }
+};
+vec** arr;
+vec** arr1;
 
-int getMax(int arr[], int n)
-{
-    int mx = arr[0];
-    for (int i = 1; i < n; i++)
-        if (arr[i] > mx)
-            mx = arr[i];
-    return mx;
+void count_sort(int i, int size) {
+        int x, j, y, c[4];
+        for(x = 0; x < 4; x++) {
+                c[x] = 0;
+        }
+        for(j = 1; j <= size; j++) {
+                c[arr[j]->key[i]] = c[arr[j]->key[i]]+1;
+        }
+        for(x = 1; x < 4; x++) {
+                c[x] = c[x]+c[x-1];
+        }
+        for(j = size; j >= 1; j--) {
+                arr1[c[arr[j]->key[i]]] = arr[j];
+                c[arr[j]->key[i]] = c[arr[j]->key[i]]-1;
+        }
+        for (y = 1; y <= size; y++) {
+                arr[y] = arr1[y];
+        }
 }
 
-void countSort(int arr[], int n, int exp)
-{
-    int output[n]; // output array
-    int i, count[10] = {0};
- 
-    // Store count of occurrences in count[]
-    for (i = 0; i < n; i++)
-        count[ (arr[i]/exp)%10 ]++;
- 
-    // Change count[i] so that count[i] now contains actual
-    //  position of this digit in output[]
-    for (i = 1; i < 10; i++)
-        count[i] += count[i - 1];
- 
-    // Build the output array
-    for (i = n - 1; i >= 0; i--)
-    {
-        output[count[ (arr[i]/exp)%10 ] - 1] = arr[i];
-        count[ (arr[i]/exp)%10 ]--;
+void radix_sort(int size) {
+        for(int i = 10; i >= 1; i--) {
+                count_sort(i, size);
+        }
+}
+
+int main() {
+    int num, x, size;
+    cin >> size;
+    arr = new vec * [size + 1];
+    arr1 = new vec * [size + 1];
+
+    for(num = 1; num <= size; num++) {
+            arr[num] = new vec();
+            for(int x = 1; x <= 10; x++) {
+                    cin >> arr[num]->key[x];
+            }
     }
- 
-    // Copy the output array to arr[], so that arr[] now
-    // contains sorted numbers according to current digit
-    for (i = 0; i < n; i++)
-        arr[i] = output[i];
-}
-
-void radixsort(int arr[], int n)
-{
-       int m = getMax(arr, n);
- 
-       for (int exp = 1; m/exp > 0; exp *= 10)
-         countSort(arr, n, exp);
-}
-
-
-int main(int argc,char **argv) {
-
-  int *Sequence;
-  int arraySize;
-
-  // Get the size of the sequence
-  cin >> arraySize;
-
-  // Allocate enough memory to store "arraySize" integers
-  Sequence = new int[arraySize];
-    
-  // Read in the sequence
-  for ( int i=0; i<arraySize; i++ )
-    cin >> Sequence[i];
-
-  // Run your algorithms to manipulate the elements in Sequence
-  radixsort(Sequence, arraySize); 
-    
-  // Output the result
-  for(int i=0; i<arraySize; i++)
-      cout << Sequence[i] << endl;
-    
-  // Free allocated space
-  delete[] Sequence;
+    radix_sort(size);
+    for(num = 1; num <= size; num++) {
+            for(x= 1; x <= 10; x++) {
+                    cout << arr[num]->key[x] << ";";
+            }
+            cout << "\n";
+    }
+    for(num = 1; num <= size; num++) {
+            delete arr[num];
+    }
+    delete[] arr;
+    delete[] arr1;
+    return 0;
 }
