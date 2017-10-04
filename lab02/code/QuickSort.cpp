@@ -1,4 +1,59 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+// Written by Jan Tanja
+
+#include <iostream>
+#include <algorithm>
+
+int partition(int *array, const int l, const int r) {
+    const int mid = l + (r - l) / 2;
+    const int pivot = array[mid];
+    // move the mid point value to the front.
+    std::swap(array[mid],array[l]);
+    int i = l + 1;
+    int j = r;
+    while (i <= j) {
+        while(i <= j && array[i] <= pivot) {
+            i++;
+        }
+
+        while(i <= j && array[j] > pivot) {
+            j--;
+        }
+
+        if (i < j) {
+            std::swap(array[i], array[j]);
+        }
+    }
+    std::swap(array[i - 1],array[l]);
+    return i - 1;
+}
+
+void quicksort(int *array, const int l, const int r, const int sz){
+    if (l >= r) {
+        return;
+    }
+    int part = partition(array, l, r); 
+    quicksort(array, l, part - 1, sz);
+    quicksort(array, l + 1, r, sz);
+}
+
+int main(int argc, char **argv)
+{
+  int arraySize, *Sequence;
+  std::cin >> arraySize;
+  Sequence = new int[arraySize];
+  for (int c = 0; c < arraySize; c++)
+    std::cin >> Sequence[c];
+  quicksort(Sequence, 0, (arraySize - 1), arraySize); 
+  for(int c = 0; c < arraySize; c++)
+      std::cout << Sequence[c] << std::endl;
+  delete[] Sequence;
+  return 0;
+}
+=======
+>>>>>>> d4ba1f7df4f1a569bab2d3187004920a7332cdde
 # include <iostream>
 # include <cstdlib>
 # include <ctime>
@@ -51,6 +106,7 @@ int main(int argc, char **argv)
   delete[] Sequence;
   return 0;
 }
+<<<<<<< HEAD
 =======
 // Written by Jan Tanja
 
@@ -104,3 +160,6 @@ int main(int argc, char **argv)
   return 0;
 }
 >>>>>>> 486d012ac4060a35d021527bebcfb970a3fe8394
+=======
+>>>>>>> 60aab081c6ff3518b70096780210cd7f604feef7
+>>>>>>> d4ba1f7df4f1a569bab2d3187004920a7332cdde
